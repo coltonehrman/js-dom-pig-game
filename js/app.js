@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 const Game = {
-    GOAL: 10,
+    GOAL: 100,
     dice: dice,
     currentPlayer: 0,
     playing: true,
@@ -33,14 +33,17 @@ const Game = {
     $btnNew: document.getElementsByClassName('btn-new').item(0),
     $btnRoll: document.getElementsByClassName('btn-roll').item(0),
     $btnHold: document.getElementsByClassName('btn-hold').item(0),
+    $gameGoal: document.getElementById('game-goal'),
     playerRolled: function() {
         if (!this.playing) return;
 
+        const currentPlayer = this.players[this.currentPlayer];
+        const previousRoll = currentPlayer.previousRoll;
         const roll = dice.roll();
 
-        this.players[this.currentPlayer].rolled(roll);
+        currentPlayer.rolled(roll);
 
-        if (roll === 1) {
+        if (roll === 1 || (previousRoll === 6 && roll === 6)) {
             this.switchPlayers();
             this.dice.hide();
         }
@@ -74,6 +77,10 @@ const Game = {
     },
     reset() {
         const currentPlayer = this.currentPlayer = 0;
+
+        this.GOAL = prompt('What score would you like to play to?') || 100;
+
+        this.$gameGoal.textContent = 'Playing to: ' + this.GOAL;
 
         this.players.forEach(function(player, i) {
             player.reset();

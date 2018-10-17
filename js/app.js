@@ -34,18 +34,19 @@ const Game = {
     $btnRoll: document.getElementsByClassName('btn-roll').item(0),
     $btnHold: document.getElementsByClassName('btn-hold').item(0),
     $gameGoal: document.getElementById('game-goal'),
+    $rolls: document.getElementById('rolls'),
     playerRolled: function() {
         if (!this.playing) return;
 
         const currentPlayer = this.players[this.currentPlayer];
-        const previousRoll = currentPlayer.previousRoll;
-        const roll = dice.roll();
+        const rolls = dice.rollAll();
 
-        currentPlayer.rolled(roll);
+        this.displayRolls(rolls);
+        currentPlayer.rolled(rolls);
 
-        if (roll === 1 || (previousRoll === 6 && roll === 6)) {
+        if (dice.didRoll(1, rolls) || dice.didRollAll(6, rolls)) {
             this.switchPlayers();
-            this.dice.hide();
+            this.dice.hideAll();
         }
     },
     playerHeld: function() {
@@ -54,13 +55,15 @@ const Game = {
         const currentPlayer = this.players[this.currentPlayer]
         
         currentPlayer.held();
+        
+        this.hideRolls();
 
         if (currentPlayer.score >= this.GOAL) {
             currentPlayer.won();
             this.gameOver();
         } else {
             this.switchPlayers();
-            this.dice.hide();
+            this.dice.hideAll();
         }
     },
     switchPlayers: function() {
@@ -68,26 +71,36 @@ const Game = {
         this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
         this.players[this.currentPlayer].turnStarted();
     },
+    displayGameGoal: function() {
+        this.$gameGoal.textContent = 'Playing to: ' + this.GOAL;
+    },
+    displayRolls: function(rolls) {
+        this.$rolls.textContent = 'Rolled - ' + rolls.join(', ');
+    },
+    hideRolls: function() {
+        this.$rolls.textContent = '';
+    },
     gameOver: function() {
         this.playing = false;
     },
     newGame: function() {
         this.reset();
-        this.dice.hide();
+        this.dice.hideAll();
     },
     reset() {
         const currentPlayer = this.currentPlayer = 0;
 
         this.GOAL = prompt('What score would you like to play to?') || this.GOAL;
 
-        this.$gameGoal.textContent = 'Playing to: ' + this.GOAL;
+        this.displayGameGoal();
+        this.hideRolls();
 
         this.players.forEach(function(player, i) {
             player.reset();
             (currentPlayer === i) ? player.turnStarted() : player.turnOver();
         });
 
-        this.dice.hide();
+        this.dice.hideAll();
         this.playing = true;
     },
     init: function() {

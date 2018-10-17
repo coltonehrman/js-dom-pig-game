@@ -141,29 +141,40 @@ i {
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
 
-#game-goal {
+#game-goal, #rolls {
     position: absolute;
-    width: 100%;
+    color: #555;
+    font-family: Lato;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+#game-goal {
+    top: 10px;
+    left: 10px;
+}
+
+#rolls {
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    top: 546px;
-    color: #555;
-    background: none;
-    border: none;
-    font-family: Lato;
-    font-size: 2rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    text-align: center;
 }
 
 .dice {
     position: absolute;
     left: 50%;
-    top: 178px;
     transform: translateX(-50%);
     height: 100px;
     box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
+}
+
+.dice:nth-of-type(1) {
+    top: 114px;
+}
+
+.dice:nth-of-type(2) {
+    top: 238px;
 }
 
 .winner { background-color: #f7f7f7; }

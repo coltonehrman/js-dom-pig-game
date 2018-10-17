@@ -78,7 +78,7 @@ const Game = {
     reset() {
         const currentPlayer = this.currentPlayer = 0;
 
-        this.GOAL = prompt('What score would you like to play to?') || 100;
+        this.GOAL = prompt('What score would you like to play to?') || this.GOAL;
 
         this.$gameGoal.textContent = 'Playing to: ' + this.GOAL;
 

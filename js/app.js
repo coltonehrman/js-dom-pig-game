@@ -17,8 +17,20 @@ const Game = {
     dice: dice,
     currentPlayer: 0,
     players: [ 
-        new Player({ scoreId: 'score-0', currentScoreId: 'current-0', panelId: 'player-0-panel' }).init(),
-        new Player({ scoreId: 'score-1', currentScoreId: 'current-1', panelId: 'player-1-panel' }).init()
+        new Player({ 
+            name: 'Player 1', 
+            nameId: 'name-0', 
+            scoreId: 'score-0', 
+            currentScoreId: 'current-0', 
+            panelId: 'player-0-panel' 
+        }).init(),
+        new Player({ 
+            name: 'Player 2',
+            nameId: 'name-1', 
+            scoreId: 'score-1', 
+            currentScoreId: 'current-1', 
+            panelId: 'player-1-panel' 
+        }).init()
     ],
     playerRolled: function() {
         const roll = dice.roll();
@@ -36,6 +48,7 @@ const Game = {
         currentPlayer.held();
 
         if (currentPlayer.score >= this.GOAL) {
+            currentPlayer.won();
             this.gameOver();
         } else {
             this.switchPlayers();

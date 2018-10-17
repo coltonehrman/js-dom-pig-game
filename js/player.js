@@ -1,8 +1,10 @@
 function Player(opts) {
+    this.name = opts.name;
     this.score = 0;
     this.active = false;
     this.currentScore = 0;
 
+    this.$name = document.getElementById(opts.nameId);
     this.$panel = document.getElementById(opts.panelId);
     this.$score = document.getElementById(opts.scoreId);
     this.$currentScore = document.getElementById(opts.currentScoreId);
@@ -14,8 +16,13 @@ Player.prototype.init = function() {
 }
 
 Player.prototype.reset = function() {
+    this.$name.textContent = this.name;
     this.score = this.currentScore = 0;
     this.update();
+}
+
+Player.prototype.won = function() {
+    this.$name.textContent = 'Winner!';
 }
 
 Player.prototype.rolled = function(roll) {

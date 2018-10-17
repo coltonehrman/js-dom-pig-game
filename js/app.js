@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 const Game = {
-    GOAL: 100,
+    GOAL: 10,
     $btnNew: document.getElementsByClassName('btn-new').item(0),
     $btnRoll: document.getElementsByClassName('btn-roll').item(0),
     $btnHold: document.getElementsByClassName('btn-hold').item(0),

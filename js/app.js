@@ -10,13 +10,11 @@ GAME RULES:
 */
 
 const Game = {
-    GOAL: 100,
-    $btnNew: document.getElementsByClassName('btn-new').item(0),
-    $btnRoll: document.getElementsByClassName('btn-roll').item(0),
-    $btnHold: document.getElementsByClassName('btn-hold').item(0),
+    GOAL: 10,
     dice: dice,
     currentPlayer: 0,
-    players: [ 
+    playing: true,
+    players: [
         new Player({ 
             name: 'Player 1', 
             nameId: 'name-0', 
@@ -32,7 +30,12 @@ const Game = {
             panelId: 'player-1-panel' 
         }).init()
     ],
+    $btnNew: document.getElementsByClassName('btn-new').item(0),
+    $btnRoll: document.getElementsByClassName('btn-roll').item(0),
+    $btnHold: document.getElementsByClassName('btn-hold').item(0),
     playerRolled: function() {
+        if (!this.playing) return;
+
         const roll = dice.roll();
 
         this.players[this.currentPlayer].rolled(roll);
@@ -43,6 +46,8 @@ const Game = {
         }
     },
     playerHeld: function() {
+        if (!this.playing) return;
+
         const currentPlayer = this.players[this.currentPlayer]
         
         currentPlayer.held();
@@ -61,17 +66,11 @@ const Game = {
         this.players[this.currentPlayer].turnStarted();
     },
     gameOver: function() {
-        this.$btnRoll.removeEventListener('click', this.playerRolled);
-        this.$btnHold.removeEventListener('click', this.playerHeld);
+        this.playing = false;
     },
     newGame: function() {
         this.reset();
-        this.setupButtons();
         this.dice.hide();
-    },
-    setupButtons: function() {
-        this.$btnRoll.addEventListener('click', this.playerRolled);
-        this.$btnHold.addEventListener('click', this.playerHeld);
     },
     reset() {
         const currentPlayer = this.currentPlayer = 0;
@@ -82,6 +81,7 @@ const Game = {
         });
 
         this.dice.hide();
+        this.playing = true;
     },
     init: function() {
         this.playerRolled = this.playerRolled.bind(this);
@@ -89,9 +89,10 @@ const Game = {
         this.newGame = this.newGame.bind(this);
 
         this.$btnNew.addEventListener('click', this.newGame);
-        
+        this.$btnRoll.addEventListener('click', this.playerRolled);
+        this.$btnHold.addEventListener('click', this.playerHeld);
+
         this.reset();
-        this.setupButtons();
     }
 };
 

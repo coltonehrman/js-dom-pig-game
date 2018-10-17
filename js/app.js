@@ -39,12 +39,13 @@ const Game = {
         if (!this.playing) return;
 
         const currentPlayer = this.players[this.currentPlayer];
-        const rolls = dice.rollAll();
+        const rolls = this.dice.rollAll();
 
-        this.displayRolls(rolls);
         currentPlayer.rolled(rolls);
+        this.hideRolls();
 
-        if (dice.didRoll(1, rolls) || dice.didRollAll(6, rolls)) {
+        if (this.dice.didRoll(1, rolls) || this.dice.didRollAll(6, rolls)) {
+            this.displayRolls(rolls);
             this.switchPlayers();
             this.dice.hideAll();
         }
@@ -75,7 +76,8 @@ const Game = {
         this.$gameGoal.textContent = 'Playing to: ' + this.GOAL;
     },
     displayRolls: function(rolls) {
-        this.$rolls.textContent = 'Rolled - ' + rolls.join(', ');
+        const currentPlayerName = this.players[this.currentPlayer].name;
+        this.$rolls.textContent = currentPlayerName + ' rolled ' + rolls.join(', ');
     },
     hideRolls: function() {
         this.$rolls.textContent = '';

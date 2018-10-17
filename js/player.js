@@ -16,6 +16,7 @@ Player.prototype.init = function() {
 }
 
 Player.prototype.reset = function() {
+    this.$panel.classList.remove('winner');
     this.$name.textContent = this.name;
     this.score = this.currentScore = 0;
     this.update();
@@ -23,6 +24,7 @@ Player.prototype.reset = function() {
 
 Player.prototype.won = function() {
     this.$name.textContent = 'Winner!';
+    this.$panel.classList.add('winner');
 }
 
 Player.prototype.rolled = function(roll) {
